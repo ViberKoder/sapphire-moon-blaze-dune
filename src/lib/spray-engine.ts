@@ -30,8 +30,6 @@ type Drip = {
   maxVy: number;
 };
 
-type BrushSet = { main: HTMLCanvasElement[]; mist: HTMLCanvasElement[] };
-
 const HISTORY_LIMIT = 6;
 const BRICK_ALPHA = 0.38;
 const DB_NAME = "pereulok";
@@ -45,10 +43,7 @@ export class SprayEngine {
   private onAim: (aim: AimState) => void;
   private onFirstStroke: () => void;
 
-  private brushes: Record<CapId, BrushSet> | null = null;
   private spark: HTMLCanvasElement | null = null;
-  private tintHex = "";
-  private tinted = new Map<string, HTMLCanvasElement>();
 
   private wallId: WallId | "" = "";
   private wallImg: HTMLImageElement | null = null;
@@ -113,7 +108,6 @@ export class SprayEngine {
   }
 
   start() {
-    this.brushes = buildBrushes();
     this.spark = makeSpark();
     this.bind();
     this.resize();
@@ -287,7 +281,11 @@ export class SprayEngine {
     if (!this.ready || !this.wallId || !this.pctx) return;
     if (event.pointerType === "mouse" && event.button !== 0) return;
     event.preventDefault();
-    this.view.setPointerCapture(event.pointerId);
+    try {
+      this.view.setPointerCapture(event.pointerId);
+    } catch {
+      /* pointer already gone */
+    }
     this.pointerId = event.pointerId;
     this.down = true;
     this.moved = true;
@@ -301,8 +299,8 @@ export class SprayEngine {
     const tool = this.getTool();
     const cap = CAP_BY_ID[tool.cap];
     const diameter = cap.diameter * tool.distance;
-    const alpha = cap.alpha * (0.55 + 0.45 * tool.flow) * this.pressure;
-    this.stamp(point.x, point.y, diameter, alpha, tool);
+    const strength = (0.62 + 0.38 * tool.flow) * this.pressure;
+    this.stamp(point.x, point.y, diameter, strength, tool);
     this.painted.add(this.wallId);
     this.dirty = true;
     if (!this.told) {
@@ -365,8 +363,8 @@ export class SprayEngine {
     let stamped = false;
     while (this.dwell >= 0.028) {
       this.dwell -= 0.028;
-      const alpha = cap.alpha * (0.5 + 0.5 * tool.flow) * this.pressure;
-      this.stamp(this.x, this.y, diameter, alpha, tool);
+      const strength = (0.72 + 0.28 * tool.flow) * this.pressure;
+      this.stamp(this.x, this.y, diameter, strength, tool);
       this.addPool(0.028, 0, diameter, tool, cap);
       stamped = true;
     }
@@ -387,66 +385,67 @@ export class SprayEngine {
       1.25,
       diameter * (0.12 + 0.68 * (1 - coverage)) * (1.2 - 0.35 * tool.flow),
     );
-    const alpha =
-      cap.alpha * (0.34 + 0.66 * coverage) * (0.32 + 0.68 * tool.flow) * this.pressure;
-    const steps = Math.max(1, Math.round(dist / spacing));
+    const strength =
+      (0.22 + 0.78 * coverage) * (0.28 + 0.72 * tool.flow) * this.pressure;
+    const steps = Math.min(28, Math.max(1, Math.round(dist / spacing)));
     for (let i = 1; i <= steps; i++) {
       const t = i / steps;
       const x = x0 + (x1 - x0) * t;
       const y = y0 + (y1 - y0) * t;
-      this.stamp(x, y, diameter, alpha, tool);
+      this.stamp(x, y, diameter, strength, tool);
       this.addPool(dt / steps, speed, diameter, tool, cap);
     }
   }
 
-  private stamp(x: number, y: number, diameter: number, alpha: number, tool: Tool) {
-    if (!this.pctx || !this.brushes || !this.spark) return;
-    const cap = CAP_BY_ID[tool.cap];
-    const set = this.brushes[cap.id];
-    const vi = (Math.random() * set.main.length) | 0;
+  private stamp(x: number, y: number, diameter: number, strength: number, tool: Tool) {
     const ctx = this.pctx;
-    const main = set.main[vi];
-    if (!main) return;
+    if (!ctx) return;
+    const cap = CAP_BY_ID[tool.cap];
     const paint = resolvePaint(tool);
-    ctx.save();
-    ctx.translate(
-      x + (Math.random() - 0.5) * diameter * 0.05,
-      y + (Math.random() - 0.5) * diameter * 0.05,
+    const [r, g, b] = hexToRgb(paint.hex);
+    const radius = diameter * 0.5;
+    const wet = Math.max(0.05, Math.min(1, strength));
+    const grain = Math.min(2.2, Math.max(1, this.wallPx(1) / Math.max(1, cap.dotMin)));
+    const count = Math.max(
+      2,
+      Math.round(cap.dots * (0.2 + 0.8 * wet) * (0.82 + 0.18 * tool.distance)),
     );
-    ctx.rotate(Math.random() * Math.PI * 2);
-    ctx.globalAlpha = clamp01(alpha);
-    if (cap.erase) {
-      ctx.globalCompositeOperation = "destination-out";
-      ctx.drawImage(main, -diameter / 2, -diameter / 2, diameter, diameter);
-      const mist = set.mist[(Math.random() * set.mist.length) | 0];
-      if (mist) {
-        ctx.globalAlpha = clamp01(alpha * cap.mist);
-        const md = diameter * cap.mistScale;
-        ctx.drawImage(mist, -md / 2, -md / 2, md, md);
-      }
-    } else {
-      const brush = this.tint(`${cap.id}-m-${vi}`, paint.hex, main);
-      ctx.drawImage(brush, -diameter / 2, -diameter / 2, diameter, diameter);
-      const mi = (Math.random() * set.mist.length) | 0;
-      const mistSrc = set.mist[mi];
-      if (mistSrc) {
-        const mist = this.tint(`${cap.id}-s-${mi}`, paint.hex, mistSrc);
-        ctx.globalAlpha = clamp01(alpha * cap.mist);
-        const md = diameter * cap.mistScale;
-        ctx.drawImage(mist, -md / 2, -md / 2, md, md);
-      }
-      if (paint.metallic) {
-        ctx.globalCompositeOperation = "source-over";
-        ctx.globalAlpha = 0.34;
-        const s = diameter * (0.42 + Math.random() * 0.2);
-        ctx.drawImage(
-          this.spark,
-          -s / 2 + (Math.random() - 0.5) * diameter * 0.25,
-          -s / 2 + (Math.random() - 0.5) * diameter * 0.25,
-          s,
-          s,
-        );
-      }
+    const jx = x + (Math.random() - 0.5) * diameter * 0.05;
+    const jy = y + (Math.random() - 0.5) * diameter * 0.05;
+    const alpha = cap.aMin + (cap.aMax - cap.aMin) * (0.3 + 0.7 * wet);
+
+    ctx.save();
+    ctx.globalCompositeOperation = cap.erase ? "destination-out" : "source-over";
+    ctx.fillStyle = cap.erase ? "#fff" : `rgb(${r},${g},${b})`;
+    fillDroplets(ctx, jx, jy, radius, count, cap.focus, cap.dotMin * grain, cap.dotMax * grain, alpha, 0);
+
+    const mistCount = Math.round(count * cap.sat + cap.dots * cap.mist * 0.16 * wet);
+    if (mistCount > 0) {
+      fillDroplets(
+        ctx,
+        jx,
+        jy,
+        radius * cap.mistScale,
+        mistCount,
+        0.7,
+        Math.max(0.55, cap.dotMin * grain * 0.42),
+        Math.max(cap.dotMin * grain, cap.dotMax * grain * 0.5),
+        alpha * 0.34,
+        0.58,
+      );
+    }
+
+    if (paint.metallic && !cap.erase && this.spark) {
+      ctx.globalCompositeOperation = "source-over";
+      ctx.globalAlpha = 0.32 + 0.4 * wet;
+      const sparkSize = diameter * (0.32 + Math.random() * 0.26);
+      ctx.drawImage(
+        this.spark,
+        jx - sparkSize / 2 + (Math.random() - 0.5) * radius * 0.35,
+        jy - sparkSize / 2 + (Math.random() - 0.5) * radius * 0.35,
+        sparkSize,
+        sparkSize,
+      );
     }
     ctx.restore();
   }
@@ -454,10 +453,10 @@ export class SprayEngine {
   private addPool(dt: number, speed: number, diameter: number, tool: Tool, cap: CapSpec) {
     if (!tool.drips || cap.erase || cap.drip <= 0) return;
     const slow = 1 / (1 + speed / (diameter * 7));
-    this.pool += dt * tool.flow * cap.drip * (0.2 + slow) * 2.15 * this.pressure;
+    this.pool += dt * tool.flow * cap.drip * (0.35 + slow) * 3.4 * this.pressure;
     let spawned = 0;
-    while (this.pool > 0.18 && spawned < 2 && this.drips.length < 36) {
-      this.pool -= 0.18;
+    while (this.pool > 0.1 && spawned < 3 && this.drips.length < 48) {
+      this.pool -= 0.12;
       this.spawnDrip(diameter, tool);
       spawned++;
     }
@@ -469,9 +468,9 @@ export class SprayEngine {
     this.drips.push({
       x: this.x + (Math.random() - 0.5) * diameter * 0.32,
       y: this.y + diameter * (0.12 + Math.random() * 0.32),
-      vy: 8 + Math.random() * 24,
-      width: Math.max(2.1, diameter * (0.042 + Math.random() * 0.034)),
-      volume: 0.5 + Math.random() * 0.75,
+      vy: 10 + Math.random() * 28,
+      width: Math.max(this.wallPx(4.5), diameter * (0.05 + Math.random() * 0.03)),
+      volume: 0.72 + Math.random() * 0.85,
       r,
       g,
       b,
@@ -499,25 +498,25 @@ export class SprayEngine {
       drip.x += this.mortarBias(drip.x, drip.y) * 28 * dt;
       const lum = this.sample(drip.x, drip.y) / 255;
       const rel = 0.66 + lum * 0.42;
-      ctx.strokeStyle = rgba(drip.r * rel, drip.g * rel, drip.b * rel, 0.78);
-      ctx.lineWidth = Math.max(0.8, drip.width);
+      ctx.strokeStyle = rgba(drip.r * rel, drip.g * rel, drip.b * rel, 0.92);
+      ctx.lineWidth = Math.max(this.wallPx(2.2), drip.width);
       ctx.beginPath();
       ctx.moveTo(prevX, prevY);
       ctx.lineTo(drip.x, drip.y);
       ctx.stroke();
       ctx.fillStyle = rgba(
-        Math.min(255, drip.r * rel * 1.08),
-        Math.min(255, drip.g * rel * 1.08),
-        Math.min(255, drip.b * rel * 1.08),
-        0.4,
+        Math.min(255, drip.r * rel * 1.06),
+        Math.min(255, drip.g * rel * 1.06),
+        Math.min(255, drip.b * rel * 1.06),
+        0.96,
       );
       ctx.beginPath();
-      ctx.arc(drip.x, drip.y, Math.max(0.8, drip.width * 0.48), 0, Math.PI * 2);
+      ctx.arc(drip.x, drip.y, Math.max(this.wallPx(1.6), drip.width * 0.62), 0, Math.PI * 2);
       ctx.fill();
       drip.volume -= dt * (0.26 + drip.vy / 980);
       if (drip.volume < 0.34) drip.width *= Math.max(0.15, 1 - dt * 1.5);
       const fork =
-        drip.volume > 0.42 && Math.random() < dt * 0.28 && this.drips.length < 36;
+        drip.volume > 0.42 && Math.random() < dt * 0.28 && this.drips.length < 48;
       if (fork) {
         drip.volume *= 0.62;
         this.drips.push({
@@ -578,6 +577,13 @@ export class SprayEngine {
     return { s, dw, dh, ox: (vw - dw) / 2, oy: (vh - dh) / 2 };
   }
 
+  private wallPx(cssPx: number) {
+    const rect = this.view.getBoundingClientRect();
+    const { s } = this.cover();
+    const cssPerWall = (s * rect.width) / Math.max(1, this.view.width);
+    return cssPx / Math.max(0.08, cssPerWall);
+  }
+
   private toWall(clientX: number, clientY: number) {
     const rect = this.view.getBoundingClientRect();
     const vx = ((clientX - rect.left) / Math.max(1, rect.width)) * this.view.width;
@@ -591,7 +597,7 @@ export class SprayEngine {
     this.lastClientY = clientY;
     const tool = this.getTool();
     const cap = CAP_BY_ID[tool.cap];
-    const diameter = cap.diameter * tool.distance * Math.max(1, cap.mistScale);
+    const diameter = cap.diameter * tool.distance;
     const rect = this.view.getBoundingClientRect();
     const { s } = this.cover();
     const css = this.ww ? diameter * s * (rect.width / Math.max(1, this.view.width)) : 48;
@@ -605,26 +611,6 @@ export class SprayEngine {
       hex,
       visible: forceVisible || (!overUi && this.lastClientX != null),
     });
-  }
-
-  private tint(slot: string, hex: string, src: HTMLCanvasElement) {
-    if (hex !== this.tintHex) {
-      this.tintHex = hex;
-      this.tinted.clear();
-    }
-    const cached = this.tinted.get(slot);
-    if (cached) return cached;
-    const canvas = document.createElement("canvas");
-    canvas.width = src.width;
-    canvas.height = src.height;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return src;
-    ctx.drawImage(src, 0, 0);
-    ctx.globalCompositeOperation = "source-in";
-    ctx.fillStyle = hex;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    this.tinted.set(slot, canvas);
-    return canvas;
   }
 
   private sample(x: number, y: number) {
@@ -767,56 +753,34 @@ class SprayAudio {
   }
 }
 
-function buildBrushes(): Record<CapId, BrushSet> {
-  const ids = Object.keys(CAP_BY_ID) as CapId[];
-  const sets = {} as Record<CapId, BrushSet>;
-  for (const id of ids) {
-    const cap = CAP_BY_ID[id];
-    sets[id] = {
-      main: [0, 1, 2].map(() => makeBrush(cap.brush)),
-      mist: [0, 1].map(() => makeBrush(cap.mistBrush)),
-    };
-  }
-  return sets;
-}
-
-function makeBrush(spec: BrushSpec) {
-  const canvas = document.createElement("canvas");
-  canvas.width = spec.size;
-  canvas.height = spec.size;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return canvas;
-  const cx = spec.size / 2;
-  const maxR = spec.size * 0.48;
-  const total = spec.count + Math.floor(spec.count * spec.sat);
-  ctx.fillStyle = "#fff";
-  for (let i = 0; i < total; i++) {
-    const satellite = i >= spec.count;
+function fillDroplets(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  radius: number,
+  count: number,
+  focus: number,
+  dotMin: number,
+  dotMax: number,
+  alpha: number,
+  inner: number,
+) {
+  if (count <= 0 || alpha <= 0.02) return;
+  ctx.globalAlpha = Math.max(0.05, Math.min(1, alpha));
+  ctx.beginPath();
+  for (let i = 0; i < count; i++) {
     const ang = Math.random() * Math.PI * 2;
-    const rad = satellite
-      ? maxR * (0.82 + Math.random() * 0.42)
-      : maxR * Math.pow(Math.random(), spec.focus);
-    let radius = spec.dotMin + Math.random() * (spec.dotMax - spec.dotMin);
-    let alpha = spec.aMin + Math.random() * (spec.aMax - spec.aMin);
-    if (!satellite && Math.random() < 0.04) {
-      radius *= 2.3;
-      alpha = Math.min(0.85, alpha * 1.8);
-    }
-    ctx.globalAlpha = alpha;
-    ctx.beginPath();
-    ctx.arc(cx + Math.cos(ang) * rad, cx + Math.sin(ang) * rad, radius, 0, Math.PI * 2);
-    ctx.fill();
+    const span = inner + (1 - inner) * Math.random();
+    const rad = radius * Math.pow(span, focus);
+    let size = dotMin + Math.random() * Math.max(0, dotMax - dotMin);
+    if (Math.random() < 0.055) size *= 1.85 + Math.random() * 0.7;
+    const px = x + Math.cos(ang) * rad;
+    const py = y + Math.sin(ang) * rad;
+    const dot = Math.max(0.6, size);
+    ctx.moveTo(px + dot, py);
+    ctx.arc(px, py, dot, 0, Math.PI * 2);
   }
-  ctx.globalAlpha = 1;
-  ctx.globalCompositeOperation = "destination-in";
-  const gradient = ctx.createRadialGradient(cx, cx, spec.size * 0.05, cx, cx, spec.size * 0.5);
-  gradient.addColorStop(0, "rgba(0,0,0,1)");
-  gradient.addColorStop(0.42, "rgba(0,0,0,0.95)");
-  gradient.addColorStop(0.72, "rgba(0,0,0,0.55)");
-  gradient.addColorStop(1, "rgba(0,0,0,0)");
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, spec.size, spec.size);
-  return canvas;
+  ctx.fill();
 }
 
 function makeSpark() {
@@ -896,10 +860,6 @@ function rgba(r: number, g: number, b: number, a: number) {
 
 function clamp255(value: number) {
   return Math.max(0, Math.min(255, value)) | 0;
-}
-
-function clamp01(value: number) {
-  return Math.max(0.02, Math.min(1, value));
 }
 
 function readPressure(event: PointerEvent) {

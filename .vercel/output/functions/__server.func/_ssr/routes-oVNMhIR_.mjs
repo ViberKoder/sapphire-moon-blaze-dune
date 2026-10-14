@@ -1,7 +1,7 @@
 import { i as __toESM } from "../_runtime.mjs";
 import { K as require_react, b as require_jsx_runtime } from "../_libs/@tanstack/react-router+[...].mjs";
 import { a as Trash2, c as Plus, l as Droplets, n as Volume2, o as SprayCan, r as Undo2, s as Redo2, t as VolumeX, u as Download } from "../_libs/lucide-react.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-mu8BgZCx.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-oVNMhIR_.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var WALLS = [
@@ -124,156 +124,86 @@ var CAPS = [
 		id: "skinny",
 		label: "Скинни",
 		diameter: 34,
-		alpha: .78,
-		mist: .2,
-		mistScale: 1.55,
-		drip: .28,
+		dots: 40,
+		focus: 2.4,
+		dotMin: 1.15,
+		dotMax: 2.35,
+		aMin: .42,
+		aMax: .82,
+		sat: .22,
+		mist: .4,
+		mistScale: 1.7,
+		drip: .42,
 		erase: false,
-		hz: 3400,
-		brush: {
-			size: 96,
-			count: 380,
-			focus: 2.6,
-			dotMin: 1.25,
-			dotMax: 2.3,
-			aMin: .14,
-			aMax: .36,
-			sat: .07
-		},
-		mistBrush: {
-			size: 96,
-			count: 140,
-			focus: .95,
-			dotMin: 1.1,
-			dotMax: 2,
-			aMin: .05,
-			aMax: .12,
-			sat: .16
-		}
+		hz: 3400
 	},
 	{
 		id: "fat",
 		label: "Фэт",
-		diameter: 86,
-		alpha: .62,
-		mist: .34,
-		mistScale: 1.7,
+		diameter: 92,
+		dots: 86,
+		focus: 1.4,
+		dotMin: 1.7,
+		dotMax: 3.6,
+		aMin: .32,
+		aMax: .7,
+		sat: .28,
+		mist: .5,
+		mistScale: 1.9,
 		drip: 1,
 		erase: false,
-		hz: 1450,
-		brush: {
-			size: 210,
-			count: 1450,
-			focus: 1.5,
-			dotMin: 1.45,
-			dotMax: 3.1,
-			aMin: .07,
-			aMax: .2,
-			sat: .11
-		},
-		mistBrush: {
-			size: 210,
-			count: 460,
-			focus: .72,
-			dotMin: 1.3,
-			dotMax: 2.6,
-			aMin: .035,
-			aMax: .09,
-			sat: .22
-		}
+		hz: 1450
 	},
 	{
 		id: "soft",
 		label: "Софт",
-		diameter: 148,
-		alpha: .4,
-		mist: .5,
-		mistScale: 1.48,
-		drip: .48,
+		diameter: 168,
+		dots: 64,
+		focus: .82,
+		dotMin: 2.4,
+		dotMax: 5.1,
+		aMin: .16,
+		aMax: .42,
+		sat: .36,
+		mist: .65,
+		mistScale: 1.55,
+		drip: .6,
 		erase: false,
-		hz: 880,
-		brush: {
-			size: 300,
-			count: 980,
-			focus: .82,
-			dotMin: 1.7,
-			dotMax: 3.5,
-			aMin: .045,
-			aMax: .13,
-			sat: .18
-		},
-		mistBrush: {
-			size: 300,
-			count: 380,
-			focus: .55,
-			dotMin: 1.5,
-			dotMax: 3,
-			aMin: .03,
-			aMax: .07,
-			sat: .26
-		}
+		hz: 880
 	},
 	{
 		id: "astro",
 		label: "Астро",
 		diameter: 18,
-		alpha: .92,
-		mist: .08,
+		dots: 12,
+		focus: 3.2,
+		dotMin: 1.25,
+		dotMax: 2.2,
+		aMin: .62,
+		aMax: .95,
+		sat: .1,
+		mist: .18,
 		mistScale: 1.4,
-		drip: .06,
+		drip: .12,
 		erase: false,
-		hz: 4700,
-		brush: {
-			size: 64,
-			count: 70,
-			focus: 3.5,
-			dotMin: 1.5,
-			dotMax: 2.5,
-			aMin: .28,
-			aMax: .6,
-			sat: .04
-		},
-		mistBrush: {
-			size: 64,
-			count: 28,
-			focus: 1.5,
-			dotMin: 1,
-			dotMax: 1.7,
-			aMin: .05,
-			aMax: .12,
-			sat: .1
-		}
+		hz: 4700
 	},
 	{
 		id: "wipe",
 		label: "Смывка",
-		diameter: 74,
-		alpha: .78,
-		mist: .22,
-		mistScale: 1.42,
+		diameter: 78,
+		dots: 46,
+		focus: 1.1,
+		dotMin: 2.1,
+		dotMax: 4.2,
+		aMin: .4,
+		aMax: .78,
+		sat: .16,
+		mist: .3,
+		mistScale: 1.35,
 		drip: 0,
 		erase: true,
-		hz: 1700,
-		brush: {
-			size: 170,
-			count: 640,
-			focus: 1.2,
-			dotMin: 1.7,
-			dotMax: 3.3,
-			aMin: .12,
-			aMax: .3,
-			sat: .08
-		},
-		mistBrush: {
-			size: 170,
-			count: 180,
-			focus: .8,
-			dotMin: 1.4,
-			dotMax: 2.4,
-			aMin: .05,
-			aMax: .12,
-			sat: .12
-		}
+		hz: 1700
 	}
 ];
 var CAP_BY_ID = Object.fromEntries(CAPS.map((cap) => [cap.id, cap]));
@@ -327,7 +257,7 @@ function writeStoredTool(tool) {
 	} catch {}
 }
 var HISTORY_LIMIT = 6;
-var BRICK_ALPHA = .55;
+var BRICK_ALPHA = .38;
 var DB_NAME = "pereulok";
 var DB_STORE = "walls";
 var SprayEngine = class {
@@ -337,10 +267,7 @@ var SprayEngine = class {
 	onHistory;
 	onAim;
 	onFirstStroke;
-	brushes = null;
 	spark = null;
-	tintHex = "";
-	tinted = /* @__PURE__ */ new Map();
 	wallId = "";
 	wallImg = null;
 	ww = 0;
@@ -394,7 +321,6 @@ var SprayEngine = class {
 		this.onFirstStroke = onFirstStroke;
 	}
 	start() {
-		this.brushes = buildBrushes();
 		this.spark = makeSpark();
 		this.bind();
 		this.resize();
@@ -558,7 +484,9 @@ var SprayEngine = class {
 		if (!this.ready || !this.wallId || !this.pctx) return;
 		if (event.pointerType === "mouse" && event.button !== 0) return;
 		event.preventDefault();
-		this.view.setPointerCapture(event.pointerId);
+		try {
+			this.view.setPointerCapture(event.pointerId);
+		} catch {}
 		this.pointerId = event.pointerId;
 		this.down = true;
 		this.moved = true;
@@ -570,10 +498,9 @@ var SprayEngine = class {
 		this.dwell = 0;
 		this.pushHistory();
 		const tool = this.getTool();
-		const cap = CAP_BY_ID[tool.cap];
-		const diameter = cap.diameter * tool.distance;
-		const alpha = cap.alpha * (.55 + .45 * tool.flow) * this.pressure;
-		this.stamp(point.x, point.y, diameter, alpha, tool);
+		const diameter = CAP_BY_ID[tool.cap].diameter * tool.distance;
+		const strength = (.62 + .38 * tool.flow) * this.pressure;
+		this.stamp(point.x, point.y, diameter, strength, tool);
 		this.painted.add(this.wallId);
 		this.dirty = true;
 		if (!this.told) {
@@ -631,8 +558,8 @@ var SprayEngine = class {
 		let stamped = false;
 		while (this.dwell >= .028) {
 			this.dwell -= .028;
-			const alpha = cap.alpha * (.5 + .5 * tool.flow) * this.pressure;
-			this.stamp(this.x, this.y, diameter, alpha, tool);
+			const strength = (.72 + .28 * tool.flow) * this.pressure;
+			this.stamp(this.x, this.y, diameter, strength, tool);
 			this.addPool(.028, 0, diameter, tool, cap);
 			stamped = true;
 		}
@@ -649,65 +576,50 @@ var SprayEngine = class {
 		const speed = dist / Math.max(dt, .001);
 		const coverage = 1 / (1 + speed / (diameter * 14));
 		const spacing = Math.max(1.25, diameter * (.12 + .68 * (1 - coverage)) * (1.2 - .35 * tool.flow));
-		const alpha = cap.alpha * (.34 + .66 * coverage) * (.32 + .68 * tool.flow) * this.pressure;
-		const steps = Math.max(1, Math.round(dist / spacing));
+		const strength = (.22 + .78 * coverage) * (.28 + .72 * tool.flow) * this.pressure;
+		const steps = Math.min(28, Math.max(1, Math.round(dist / spacing)));
 		for (let i = 1; i <= steps; i++) {
 			const t = i / steps;
 			const x = x0 + (x1 - x0) * t;
 			const y = y0 + (y1 - y0) * t;
-			this.stamp(x, y, diameter, alpha, tool);
+			this.stamp(x, y, diameter, strength, tool);
 			this.addPool(dt / steps, speed, diameter, tool, cap);
 		}
 	}
-	stamp(x, y, diameter, alpha, tool) {
-		if (!this.pctx || !this.brushes || !this.spark) return;
-		const cap = CAP_BY_ID[tool.cap];
-		const set = this.brushes[cap.id];
-		const vi = Math.random() * set.main.length | 0;
+	stamp(x, y, diameter, strength, tool) {
 		const ctx = this.pctx;
-		const main = set.main[vi];
-		if (!main) return;
+		if (!ctx) return;
+		const cap = CAP_BY_ID[tool.cap];
 		const paint = resolvePaint(tool);
+		const [r, g, b] = hexToRgb(paint.hex);
+		const radius = diameter * .5;
+		const wet = Math.max(.05, Math.min(1, strength));
+		const grain = Math.min(2.2, Math.max(1, this.wallPx(1) / Math.max(1, cap.dotMin)));
+		const count = Math.max(2, Math.round(cap.dots * (.2 + .8 * wet) * (.82 + .18 * tool.distance)));
+		const jx = x + (Math.random() - .5) * diameter * .05;
+		const jy = y + (Math.random() - .5) * diameter * .05;
+		const alpha = cap.aMin + (cap.aMax - cap.aMin) * (.3 + .7 * wet);
 		ctx.save();
-		ctx.translate(x + (Math.random() - .5) * diameter * .05, y + (Math.random() - .5) * diameter * .05);
-		ctx.rotate(Math.random() * Math.PI * 2);
-		ctx.globalAlpha = clamp01(alpha);
-		if (cap.erase) {
-			ctx.globalCompositeOperation = "destination-out";
-			ctx.drawImage(main, -diameter / 2, -diameter / 2, diameter, diameter);
-			const mist = set.mist[Math.random() * set.mist.length | 0];
-			if (mist) {
-				ctx.globalAlpha = clamp01(alpha * cap.mist);
-				const md = diameter * cap.mistScale;
-				ctx.drawImage(mist, -md / 2, -md / 2, md, md);
-			}
-		} else {
-			const brush = this.tint(`${cap.id}-m-${vi}`, paint.hex, main);
-			ctx.drawImage(brush, -diameter / 2, -diameter / 2, diameter, diameter);
-			const mi = Math.random() * set.mist.length | 0;
-			const mistSrc = set.mist[mi];
-			if (mistSrc) {
-				const mist = this.tint(`${cap.id}-s-${mi}`, paint.hex, mistSrc);
-				ctx.globalAlpha = clamp01(alpha * cap.mist);
-				const md = diameter * cap.mistScale;
-				ctx.drawImage(mist, -md / 2, -md / 2, md, md);
-			}
-			if (paint.metallic) {
-				ctx.globalCompositeOperation = "source-over";
-				ctx.globalAlpha = .34;
-				const s = diameter * (.42 + Math.random() * .2);
-				ctx.drawImage(this.spark, -s / 2 + (Math.random() - .5) * diameter * .25, -s / 2 + (Math.random() - .5) * diameter * .25, s, s);
-			}
+		ctx.globalCompositeOperation = cap.erase ? "destination-out" : "source-over";
+		ctx.fillStyle = cap.erase ? "#fff" : `rgb(${r},${g},${b})`;
+		fillDroplets(ctx, jx, jy, radius, count, cap.focus, cap.dotMin * grain, cap.dotMax * grain, alpha, 0);
+		const mistCount = Math.round(count * cap.sat + cap.dots * cap.mist * .16 * wet);
+		if (mistCount > 0) fillDroplets(ctx, jx, jy, radius * cap.mistScale, mistCount, .7, Math.max(.55, cap.dotMin * grain * .42), Math.max(cap.dotMin * grain, cap.dotMax * grain * .5), alpha * .34, .58);
+		if (paint.metallic && !cap.erase && this.spark) {
+			ctx.globalCompositeOperation = "source-over";
+			ctx.globalAlpha = .32 + .4 * wet;
+			const sparkSize = diameter * (.32 + Math.random() * .26);
+			ctx.drawImage(this.spark, jx - sparkSize / 2 + (Math.random() - .5) * radius * .35, jy - sparkSize / 2 + (Math.random() - .5) * radius * .35, sparkSize, sparkSize);
 		}
 		ctx.restore();
 	}
 	addPool(dt, speed, diameter, tool, cap) {
 		if (!tool.drips || cap.erase || cap.drip <= 0) return;
 		const slow = 1 / (1 + speed / (diameter * 7));
-		this.pool += dt * tool.flow * cap.drip * (.2 + slow) * 2.15 * this.pressure;
+		this.pool += dt * tool.flow * cap.drip * (.35 + slow) * 3.4 * this.pressure;
 		let spawned = 0;
-		while (this.pool > .18 && spawned < 2 && this.drips.length < 36) {
-			this.pool -= .18;
+		while (this.pool > .1 && spawned < 3 && this.drips.length < 48) {
+			this.pool -= .12;
 			this.spawnDrip(diameter, tool);
 			spawned++;
 		}
@@ -718,9 +630,9 @@ var SprayEngine = class {
 		this.drips.push({
 			x: this.x + (Math.random() - .5) * diameter * .32,
 			y: this.y + diameter * (.12 + Math.random() * .32),
-			vy: 8 + Math.random() * 24,
-			width: Math.max(2.1, diameter * (.042 + Math.random() * .034)),
-			volume: .5 + Math.random() * .75,
+			vy: 10 + Math.random() * 28,
+			width: Math.max(this.wallPx(4.5), diameter * (.05 + Math.random() * .03)),
+			volume: .72 + Math.random() * .85,
 			r,
 			g,
 			b,
@@ -746,19 +658,19 @@ var SprayEngine = class {
 			drip.x += Math.sin(drip.y * .07 + drip.seed) * 16 * dt;
 			drip.x += this.mortarBias(drip.x, drip.y) * 28 * dt;
 			const rel = .66 + this.sample(drip.x, drip.y) / 255 * .42;
-			ctx.strokeStyle = rgba(drip.r * rel, drip.g * rel, drip.b * rel, .78);
-			ctx.lineWidth = Math.max(.8, drip.width);
+			ctx.strokeStyle = rgba(drip.r * rel, drip.g * rel, drip.b * rel, .92);
+			ctx.lineWidth = Math.max(this.wallPx(2.2), drip.width);
 			ctx.beginPath();
 			ctx.moveTo(prevX, prevY);
 			ctx.lineTo(drip.x, drip.y);
 			ctx.stroke();
-			ctx.fillStyle = rgba(Math.min(255, drip.r * rel * 1.08), Math.min(255, drip.g * rel * 1.08), Math.min(255, drip.b * rel * 1.08), .4);
+			ctx.fillStyle = rgba(Math.min(255, drip.r * rel * 1.06), Math.min(255, drip.g * rel * 1.06), Math.min(255, drip.b * rel * 1.06), .96);
 			ctx.beginPath();
-			ctx.arc(drip.x, drip.y, Math.max(.8, drip.width * .48), 0, Math.PI * 2);
+			ctx.arc(drip.x, drip.y, Math.max(this.wallPx(1.6), drip.width * .62), 0, Math.PI * 2);
 			ctx.fill();
 			drip.volume -= dt * (.26 + drip.vy / 980);
 			if (drip.volume < .34) drip.width *= Math.max(.15, 1 - dt * 1.5);
-			if (drip.volume > .42 && Math.random() < dt * .28 && this.drips.length < 36) {
+			if (drip.volume > .42 && Math.random() < dt * .28 && this.drips.length < 48) {
 				drip.volume *= .62;
 				this.drips.push({
 					x: drip.x + (Math.random() - .5) * 4,
@@ -818,6 +730,12 @@ var SprayEngine = class {
 			oy: (vh - dh) / 2
 		};
 	}
+	wallPx(cssPx) {
+		const rect = this.view.getBoundingClientRect();
+		const { s } = this.cover();
+		const cssPerWall = s * rect.width / Math.max(1, this.view.width);
+		return cssPx / Math.max(.08, cssPerWall);
+	}
 	toWall(clientX, clientY) {
 		const rect = this.view.getBoundingClientRect();
 		const vx = (clientX - rect.left) / Math.max(1, rect.width) * this.view.width;
@@ -832,8 +750,7 @@ var SprayEngine = class {
 		this.lastClientX = clientX;
 		this.lastClientY = clientY;
 		const tool = this.getTool();
-		const cap = CAP_BY_ID[tool.cap];
-		const diameter = cap.diameter * tool.distance * Math.max(1, cap.mistScale);
+		const diameter = CAP_BY_ID[tool.cap].diameter * tool.distance;
 		const rect = this.view.getBoundingClientRect();
 		const { s } = this.cover();
 		const css = this.ww ? diameter * s * (rect.width / Math.max(1, this.view.width)) : 48;
@@ -846,25 +763,6 @@ var SprayEngine = class {
 			hex,
 			visible: forceVisible || !overUi && this.lastClientX != null
 		});
-	}
-	tint(slot, hex, src) {
-		if (hex !== this.tintHex) {
-			this.tintHex = hex;
-			this.tinted.clear();
-		}
-		const cached = this.tinted.get(slot);
-		if (cached) return cached;
-		const canvas = document.createElement("canvas");
-		canvas.width = src.width;
-		canvas.height = src.height;
-		const ctx = canvas.getContext("2d");
-		if (!ctx) return src;
-		ctx.drawImage(src, 0, 0);
-		ctx.globalCompositeOperation = "source-in";
-		ctx.fillStyle = hex;
-		ctx.fillRect(0, 0, canvas.width, canvas.height);
-		this.tinted.set(slot, canvas);
-		return canvas;
 	}
 	sample(x, y) {
 		if (!this.lum || !this.ww) return 150;
@@ -990,57 +888,23 @@ var SprayAudio = class {
 		this.filter = filter;
 	}
 };
-function buildBrushes() {
-	const ids = Object.keys(CAP_BY_ID);
-	const sets = {};
-	for (const id of ids) {
-		const cap = CAP_BY_ID[id];
-		sets[id] = {
-			main: [
-				0,
-				1,
-				2
-			].map(() => makeBrush(cap.brush)),
-			mist: [0, 1].map(() => makeBrush(cap.mistBrush))
-		};
-	}
-	return sets;
-}
-function makeBrush(spec) {
-	const canvas = document.createElement("canvas");
-	canvas.width = spec.size;
-	canvas.height = spec.size;
-	const ctx = canvas.getContext("2d");
-	if (!ctx) return canvas;
-	const cx = spec.size / 2;
-	const maxR = spec.size * .48;
-	const total = spec.count + Math.floor(spec.count * spec.sat);
-	ctx.fillStyle = "#fff";
-	for (let i = 0; i < total; i++) {
-		const satellite = i >= spec.count;
+function fillDroplets(ctx, x, y, radius, count, focus, dotMin, dotMax, alpha, inner) {
+	if (count <= 0 || alpha <= .02) return;
+	ctx.globalAlpha = Math.max(.05, Math.min(1, alpha));
+	ctx.beginPath();
+	for (let i = 0; i < count; i++) {
 		const ang = Math.random() * Math.PI * 2;
-		const rad = satellite ? maxR * (.82 + Math.random() * .42) : maxR * Math.pow(Math.random(), spec.focus);
-		let radius = spec.dotMin + Math.random() * (spec.dotMax - spec.dotMin);
-		let alpha = spec.aMin + Math.random() * (spec.aMax - spec.aMin);
-		if (!satellite && Math.random() < .04) {
-			radius *= 2.3;
-			alpha = Math.min(.85, alpha * 1.8);
-		}
-		ctx.globalAlpha = alpha;
-		ctx.beginPath();
-		ctx.arc(cx + Math.cos(ang) * rad, cx + Math.sin(ang) * rad, radius, 0, Math.PI * 2);
-		ctx.fill();
+		const span = inner + (1 - inner) * Math.random();
+		const rad = radius * Math.pow(span, focus);
+		let size = dotMin + Math.random() * Math.max(0, dotMax - dotMin);
+		if (Math.random() < .055) size *= 1.85 + Math.random() * .7;
+		const px = x + Math.cos(ang) * rad;
+		const py = y + Math.sin(ang) * rad;
+		const dot = Math.max(.6, size);
+		ctx.moveTo(px + dot, py);
+		ctx.arc(px, py, dot, 0, Math.PI * 2);
 	}
-	ctx.globalAlpha = 1;
-	ctx.globalCompositeOperation = "destination-in";
-	const gradient = ctx.createRadialGradient(cx, cx, spec.size * .05, cx, cx, spec.size * .5);
-	gradient.addColorStop(0, "rgba(0,0,0,1)");
-	gradient.addColorStop(.42, "rgba(0,0,0,0.95)");
-	gradient.addColorStop(.72, "rgba(0,0,0,0.55)");
-	gradient.addColorStop(1, "rgba(0,0,0,0)");
-	ctx.fillStyle = gradient;
-	ctx.fillRect(0, 0, spec.size, spec.size);
-	return canvas;
+	ctx.fill();
 }
 function makeSpark() {
 	const canvas = document.createElement("canvas");
@@ -1124,9 +988,6 @@ function rgba(r, g, b, a) {
 function clamp255(value) {
 	return Math.max(0, Math.min(255, value)) | 0;
 }
-function clamp01(value) {
-	return Math.max(.02, Math.min(1, value));
-}
 function readPressure(event) {
 	if (event.pointerType === "pen") return Math.max(.12, event.pressure || .4);
 	return .92;
@@ -1189,7 +1050,7 @@ function AlleyStudio() {
 		canUndo: false,
 		canRedo: false
 	});
-	const persistReady = (0, import_react.useRef)(false);
+	const [hydrated, setHydrated] = (0, import_react.useState)(false);
 	toolRef.current = tool;
 	const onHistory = (0, import_react.useCallback)((state) => setHist(state), []);
 	const onFirstStroke = (0, import_react.useCallback)(() => setHint(false), []);
@@ -1220,17 +1081,18 @@ function AlleyStudio() {
 	(0, import_react.useEffect)(() => {
 		const stored = readStoredTool();
 		if (stored) setTool(stored);
-		persistReady.current = true;
+		setHydrated(true);
 	}, []);
 	(0, import_react.useEffect)(() => {
-		if (!persistReady.current) return;
+		if (!hydrated) return;
 		writeStoredTool(tool);
 		engineRef.current?.refreshAim();
-	}, [tool]);
+	}, [tool, hydrated]);
 	(0, import_react.useEffect)(() => {
+		if (!hydrated) return;
 		const wall = WALLS.find((item) => item.id === tool.wallId) ?? WALLS[0];
 		engineRef.current?.setWall(wall.id, wall.src);
-	}, [tool.wallId]);
+	}, [tool.wallId, hydrated]);
 	(0, import_react.useEffect)(() => {
 		const onKey = (event) => {
 			const target = event.target;
@@ -1325,13 +1187,13 @@ function AlleyStudio() {
 						}, item.id))
 					})]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "mt-auto flex flex-col gap-2",
+					className: "mt-auto flex min-h-0 w-full max-h-[calc(100%-4.75rem)] flex-col gap-2",
 					children: [hint ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-						className: "mx-auto max-w-md rounded-md bg-bg px-3 py-2 text-center text-sm text-muted",
+						className: "mx-auto max-w-md shrink-0 rounded-md bg-bg px-3 py-2 text-center text-sm text-muted",
 						children: "Веди медленно — слой ляжет плотно и потечёт. Быстрый росчерк оставляет зерно баллона."
 					}) : null, /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						"data-ui": true,
-						className: "pointer-events-auto flex flex-col gap-3 rounded-xl border border-border bg-bg p-3",
+						className: "pointer-events-auto flex min-h-0 flex-col gap-3 overflow-y-auto rounded-xl border border-border bg-bg p-3",
 						children: [
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 								className: "scroller -mx-1 flex gap-2 overflow-x-auto px-1 py-1",
@@ -1349,7 +1211,7 @@ function AlleyStudio() {
 											...current,
 											paintId: item.id
 										})),
-										className: cx("size-11 shrink-0 rounded-full border", active ? "border-fg ring-2 ring-fg ring-offset-2 ring-offset-bg" : "border-border"),
+										className: cx("size-11 shrink-0 rounded-full border shadow-[inset_0_0_0_1px_rgba(255,255,255,0.35)]", active ? "border-fg ring-2 ring-fg ring-offset-2 ring-offset-bg" : "border-border"),
 										style: { backgroundColor: item.hex }
 									}, item.id);
 								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", {
@@ -1370,6 +1232,7 @@ function AlleyStudio() {
 											value: tool.customHex,
 											"aria-label": "Свой цвет",
 											className: "absolute inset-0 opacity-0",
+											suppressHydrationWarning: true,
 											onChange: (event) => setTool((current) => ({
 												...current,
 												paintId: "custom",
@@ -1413,6 +1276,7 @@ function AlleyStudio() {
 										step: .01,
 										value: tool.distance,
 										"aria-label": "Дистанция от стены",
+										suppressHydrationWarning: true,
 										onChange: (event) => setTool((current) => ({
 											...current,
 											distance: Number(event.target.value)
@@ -1431,6 +1295,7 @@ function AlleyStudio() {
 										step: .01,
 										value: tool.flow,
 										"aria-label": "Напор краски",
+										suppressHydrationWarning: true,
 										onChange: (event) => setTool((current) => ({
 											...current,
 											flow: Number(event.target.value)

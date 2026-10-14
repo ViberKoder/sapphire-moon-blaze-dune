@@ -36,7 +36,7 @@ export function AlleyStudio() {
   const [tool, setTool] = useState<Tool>(DEFAULT_TOOL);
   const [hint, setHint] = useState(true);
   const [hist, setHist] = useState<HistoryState>({ canUndo: false, canRedo: false });
-  const persistReady = useRef(false);
+  const [hydrated, setHydrated] = useState(false);
   toolRef.current = tool;
 
   const onHistory = useCallback((state: HistoryState) => setHist(state), []);
@@ -66,19 +66,20 @@ export function AlleyStudio() {
   useEffect(() => {
     const stored = readStoredTool();
     if (stored) setTool(stored);
-    persistReady.current = true;
+    setHydrated(true);
   }, []);
 
   useEffect(() => {
-    if (!persistReady.current) return;
+    if (!hydrated) return;
     writeStoredTool(tool);
     engineRef.current?.refreshAim();
-  }, [tool]);
+  }, [tool, hydrated]);
 
   useEffect(() => {
+    if (!hydrated) return;
     const wall = WALLS.find((item) => item.id === tool.wallId) ?? WALLS[0]!;
     void engineRef.current?.setWall(wall.id, wall.src);
-  }, [tool.wallId]);
+  }, [tool.wallId, hydrated]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -163,14 +164,14 @@ export function AlleyStudio() {
           </div>
         </div>
 
-        <div className="mt-auto flex flex-col gap-2">
+        <div className="mt-auto flex min-h-0 w-full max-h-[calc(100%-4.75rem)] flex-col gap-2">
           {hint ? (
-            <p className="mx-auto max-w-md rounded-md bg-bg px-3 py-2 text-center text-sm text-muted">
+            <p className="mx-auto max-w-md shrink-0 rounded-md bg-bg px-3 py-2 text-center text-sm text-muted">
               Веди медленно — слой ляжет плотно и потечёт. Быстрый росчерк оставляет зерно баллона.
             </p>
           ) : null}
 
-          <div data-ui className="pointer-events-auto flex flex-col gap-3 rounded-xl border border-border bg-bg p-3">
+          <div data-ui className="pointer-events-auto flex min-h-0 flex-col gap-3 overflow-y-auto rounded-xl border border-border bg-bg p-3">
             <div className="scroller -mx-1 flex gap-2 overflow-x-auto px-1 py-1" role="listbox" aria-label="Цвет">
               {PAINTS.map((item) => {
                 const active = tool.paintId === item.id;
@@ -184,7 +185,7 @@ export function AlleyStudio() {
                     title={item.name}
                     onClick={() => setTool((current) => ({ ...current, paintId: item.id }))}
                     className={cx(
-                      "size-11 shrink-0 rounded-full border",
+                      "size-11 shrink-0 rounded-full border shadow-[inset_0_0_0_1px_rgba(255,255,255,0.35)]",
                       active ? "border-fg ring-2 ring-fg ring-offset-2 ring-offset-bg" : "border-border",
                     )}
                     style={{ backgroundColor: item.hex }}
@@ -206,6 +207,7 @@ export function AlleyStudio() {
                   value={tool.customHex}
                   aria-label="Свой цвет"
                   className="absolute inset-0 opacity-0"
+                  suppressHydrationWarning
                   onChange={(event) =>
                     setTool((current) => ({
                       ...current,
@@ -249,6 +251,7 @@ export function AlleyStudio() {
                   step={0.01}
                   value={tool.distance}
                   aria-label="Дистанция от стены"
+                  suppressHydrationWarning
                   onChange={(event) =>
                     setTool((current) => ({ ...current, distance: Number(event.target.value) }))
                   }
@@ -264,6 +267,7 @@ export function AlleyStudio() {
                   step={0.01}
                   value={tool.flow}
                   aria-label="Напор краски"
+                  suppressHydrationWarning
                   onChange={(event) =>
                     setTool((current) => ({ ...current, flow: Number(event.target.value) }))
                   }
